@@ -1,0 +1,17 @@
+{
+  "name": "paje-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve:examples": "npx http-server . -0 ./examples/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "A minimalized approach to a frontend framework",
+  "workspaces": [
+    "packages/runtime"
+  ]
+}
