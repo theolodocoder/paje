@@ -5,6 +5,7 @@ const todos = [];
 const addTodoInput = document.getElementById("todo-input");
 const addTodoButton = document.getElementById("add-todo-btn");
 const todosList = document.getElementById("todos-list");
+const clearAllTodosButton = document.getElementById("clear-all-btn");
 
 // Initialize todos view
 for (const todo of todos) {
@@ -28,6 +29,7 @@ addTodoInput.addEventListener("keydown", ({ key }) => {
 });
 
 addTodoButton.addEventListener("click", () => addTodo());
+clearAllTodosButton.addEventListener("click", () => removeAllTodos());
 
 // Functions
 function renderTodosInReadMode(todo) {
@@ -51,7 +53,13 @@ function renderTodosInReadMode(todo) {
 
   button.addEventListener("click", () => {
     const todoIdx = todos.indexOf(todo);
-    removeTodo(todoIdx);
+    if (todoIdx !== -1) {
+      // Line through the todo and prevent editing
+      span.style.textDecoration = "line-through";
+      span.style.color = "#888";
+      span.style.pointerEvents = "none";
+      button.disabled = true;
+    }
   });
 
   li.append(button);
@@ -134,8 +142,13 @@ function addTodo() {
   updateAddButtonState();
 }
 
-function removeTodo(idx) {
-  if (idx < 0 || idx >= todos.length) return;
-  todos.splice(idx, 1);
-  todosList.childNodes[idx].remove();
+// function removeTodo(idx) {
+//   if (idx < 0 || idx >= todos.length) return;
+//   todos.splice(idx, 1);
+//   todosList.childNodes[idx].remove();
+// }
+
+function removeAllTodos() {
+  todos.splice(0, todos.length);
+  todosList.childNodes.map((todo) => todo.remove());
 }
