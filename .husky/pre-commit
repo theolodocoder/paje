@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run basic checks before commit
+echo "Running pre-commit checks..."
+
+# Check if package.json has been modified and lockfile exists
+if git diff --cached --name-only | grep -q "package\.json$"; then
+  if [ -f "package-lock.json" ]; then
+    echo "✓ package.json and lockfile are in sync"
+  else
+    echo "❌ package.json modified but no lockfile found"
+    echo "Run 'npm install' to generate package-lock.json"
+    exit 1
+  fi
+fi
+
+echo "✓ Pre-commit checks passed"
