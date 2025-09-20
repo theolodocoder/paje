@@ -1,6 +1,10 @@
 // state of the app
 const todos = [];
 
+// speech synthesis
+const synth = window.speechSynthesis;
+const voices = synth.getVoices();
+
 // HTML Element reference
 const addTodoInput = document.getElementById("todo-input");
 const addTodoButton = document.getElementById("add-todo-btn");
@@ -138,17 +142,42 @@ function addTodo() {
   const todoList = renderTodosInReadMode(todo);
   todosList.append(todoList);
 
+  speak(todo);
+
   addTodoInput.value = "";
   updateAddButtonState();
 }
 
-// function removeTodo(idx) {
-//   if (idx < 0 || idx >= todos.length) return;
-//   todos.splice(idx, 1);
-//   todosList.childNodes[idx].remove();
-// }
+function removeTodo(idx) {
+  if (idx < 0 || idx >= todos.length) return;
+  todos.splice(idx, 1);
+  todosList.childNodes[idx].remove();
+}
 
 function removeAllTodos() {
   todos.splice(0, todos.length);
-  todosList.childNodes.map((todo) => todo.remove());
+  todosList.innerHTML = "";
+}
+
+function speak(todo) {
+  if (synth.speaking) {
+    console.error("speechSynthesis.speaking");
+    return;
+  }
+
+  const utterThis = new SpeechSynthesisUtterance(todo);
+
+  utterThis.onend = function () {
+    console.log("SpeechSynthesisUtterance.onend");
+  };
+
+  utterThis.onerror = function () {
+    console.error("SpeechSynthesisUtterance.onerror");
+  };
+
+  utterThis.voice = voices[0];
+  utterThis.pitch = 2;
+  utterThis.rate = 1;
+
+  synth.speak(utterThis);
 }
