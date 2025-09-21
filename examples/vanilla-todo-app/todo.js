@@ -1,14 +1,27 @@
-// state of the app
+/**
+ * State of the app: Array of todo strings.
+ * @type {string[]}
+ */
 const todos = [];
 
-// speech synthesis
+/**
+ * Speech synthesis instance and available voices.
+ * @type {SpeechSynthesis}
+ */
 const synth = window.speechSynthesis;
+/**
+ * @type {SpeechSynthesisVoice[]}
+ */
 const voices = synth.getVoices();
 
-// HTML Element reference
+// HTML Element references
+/** @type {HTMLInputElement} */
 const addTodoInput = document.getElementById("todo-input");
+/** @type {HTMLButtonElement} */
 const addTodoButton = document.getElementById("add-todo-btn");
+/** @type {HTMLUListElement} */
 const todosList = document.getElementById("todos-list");
+/** @type {HTMLButtonElement} */
 const clearAllTodosButton = document.getElementById("clear-all-btn");
 
 // Initialize todos view
@@ -16,10 +29,19 @@ for (const todo of todos) {
   todosList.append(renderTodosInReadMode(todo));
 }
 
+/**
+ * Checks if a todo string is valid (trimmed, min 3 chars, not duplicate).
+ * @param {string} str
+ * @returns {boolean}
+ */
 function isValidTodo(str) {
   return str.trim().length >= 3 && !todos.includes(str.trim());
 }
 
+/**
+ * Updates the disabled state of the add button based on input validity.
+ * @returns {void}
+ */
 function updateAddButtonState() {
   addTodoButton.disabled = !isValidTodo(addTodoInput.value);
 }
@@ -35,7 +57,11 @@ addTodoInput.addEventListener("keydown", ({ key }) => {
 addTodoButton.addEventListener("click", () => addTodo());
 clearAllTodosButton.addEventListener("click", () => removeAllTodos());
 
-// Functions
+/**
+ * Renders a todo item in read mode (not editing).
+ * @param {string} todo
+ * @returns {HTMLLIElement}
+ */
 function renderTodosInReadMode(todo) {
   const li = document.createElement("li");
   const span = document.createElement("span");
@@ -70,6 +96,11 @@ function renderTodosInReadMode(todo) {
   return li;
 }
 
+/**
+ * Renders a todo item in edit mode.
+ * @param {string} todo
+ * @returns {HTMLLIElement}
+ */
 function renderTodosInEditMode(todo) {
   const todoIdx = todos.indexOf(todo);
   const li = document.createElement("li");
@@ -87,6 +118,10 @@ function renderTodosInEditMode(todo) {
   saveButton.textContent = "Save";
   cancelButton.textContent = "Cancel";
 
+  /**
+   * Updates the disabled state of the save button based on input validity.
+   * @returns {void}
+   */
   function updateSaveButtonState() {
     saveButton.disabled =
       input.value.trim().length < 3 ||
@@ -134,6 +169,10 @@ function renderTodosInEditMode(todo) {
   return li;
 }
 
+/**
+ * Adds a new todo to the list if valid.
+ * @returns {void}
+ */
 function addTodo() {
   const todo = addTodoInput.value.trim();
   if (!isValidTodo(todo)) return;
@@ -148,17 +187,31 @@ function addTodo() {
   updateAddButtonState();
 }
 
+/**
+ * Removes a todo at the given index.
+ * @param {number} idx
+ * @returns {void}
+ */
 function removeTodo(idx) {
   if (idx < 0 || idx >= todos.length) return;
   todos.splice(idx, 1);
   todosList.childNodes[idx].remove();
 }
 
+/**
+ * Removes all todos from the list and UI.
+ * @returns {void}
+ */
 function removeAllTodos() {
   todos.splice(0, todos.length);
   todosList.innerHTML = "";
 }
 
+/**
+ * Uses speech synthesis to speak the given todo.
+ * @param {string} todo
+ * @returns {void}
+ */
 function speak(todo) {
   if (synth.speaking) {
     console.error("speechSynthesis.speaking");
