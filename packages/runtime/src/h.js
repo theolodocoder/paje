@@ -1,4 +1,4 @@
-import { withoutNulls } from "./utils/arrays";
+import { withoutNulls } from "./utils/arrays.js";
 
 /**
  * Enum for DOM node types.
@@ -10,6 +10,7 @@ export const DOM_TYPES = {
   ELEMENT: "element",
   FRAGMENT: "fragment",
 };
+
 
 /**
  * Hyperscript function to create a virtual DOM element node.
@@ -39,6 +40,18 @@ function mapTextNodes(children) {
 }
 
 /**
+ * Creates a virtual DOM Fragment node.
+ * @param {Array} vNodes - An array of virtual Nodes.
+ * @returns {Object} Virtual DOM node representing an element.
+ */
+function hFragment(vNodes) {
+  return {
+    type: DOM_TYPES.FRAGMENT,
+    children: mapTextNodes(withoutNulls(vNodes)),
+  };
+}
+
+/**
  * Creates a virtual DOM text node.
  * @param {string} str - The text content.
  * @returns {Object} Virtual DOM node representing a text node.
@@ -49,3 +62,18 @@ function hString(str) {
     value: str,
   };
 }
+
+function lipsum(num) {
+  const text = `“Lorem ipsum dolor sit amet, consectetur adipisc
+ing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+ ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea com
+modo consequat`;
+
+  return hFragment(Array(num).fill(h("p", {}, [text])));
+}
+
+function MessageComponent({ level, message }) {
+  return h("div", { class: `message message--${level}` }[h("p", {}, message)]);
+}
+
+

@@ -2,6 +2,7 @@
   "name": "paje",
   "version": "1.0.0",
   "main": "dist/paje.js",
+  "type": "module",
   "files": [
     "dist/paje.js"
   ],
