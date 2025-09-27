@@ -29,3 +29,13 @@ export function addEventListeners(el, events = {}) {
 
   return addedEvents;
 }
+
+export function removeEventListeners(el, events) {
+  Object.entries(events).forEach(([ev, handler]) =>
+    removeEventListener(el, ev, handler)
+  );
+}
+
+function removeEventListener(el, eventName, handler) {
+  el.removeEventListener(eventName, handler);
+}

@@ -3,11 +3,9 @@ import { addEventListeners } from "./events";
 import { DOM_TYPES } from "./h";
 
 /**
- * Mounts a virtual DOM node to the actual DOM by creating the appropriate DOM elements
- * and attaching them to the specified parent element.
- *
+ * Mounts a virtual DOM tree into the actual DOM
  * @param {Object} vdom - The virtual DOM node to mount
- * @param {HTMLElement} parentEl - The parent DOM element to mount the vdom into
+ * @param {HTMLElement} parentEl - The parent DOM element to mount into
  */
 export function mountDom(vdom, parentEl) {
   switch (vdom.type) {
@@ -26,10 +24,9 @@ export function mountDom(vdom, parentEl) {
 }
 
 /**
- * Creates a text node from a virtual DOM text node and appends it to the parent element.
- *
- * @param {Object} vdom - The virtual DOM text node containing the text value
- * @param {HTMLElement} parentEl - The parent DOM element to append the text node to
+ * Creates and mounts a text node to the DOM
+ * @param {Object} vdom - The virtual text node
+ * @param {HTMLElement} parentEl - The parent element to append to
  */
 function createTextNode(vdom, parentEl) {
   const { value } = vdom;
@@ -41,11 +38,9 @@ function createTextNode(vdom, parentEl) {
 }
 
 /**
- * Creates a fragment node by mounting all its children directly to the parent element.
- * Fragments are virtual containers that don't create actual DOM elements.
- *
- * @param {Object} vdom - The virtual DOM fragment node containing children
- * @param {HTMLElement} parentEl - The parent DOM element to mount children into
+ * Creates a fragment node (a collection of nodes without a wrapper element)
+ * @param {Object} vdom - The virtual fragment node
+ * @param {HTMLElement} parentEl - The parent element to append children to
  */
 function createFragmentNode(vdom, parentEl) {
   const { children } = vdom;
@@ -55,11 +50,9 @@ function createFragmentNode(vdom, parentEl) {
 }
 
 /**
- * Creates an HTML element from a virtual DOM element node, applies its properties,
- * mounts its children, and appends it to the parent element.
- *
- * @param {Object} vdom - The virtual DOM element node with tag, props, and children
- * @param {HTMLElement} parentEl - The parent DOM element to append the created element to
+ * Creates and mounts an HTML element node to the DOM
+ * @param {Object} vdom - The virtual element node
+ * @param {HTMLElement} parentEl - The parent element to append to
  */
 function createElementNode(vdom, parentEl) {
   const { tag, props, children } = vdom;
@@ -69,17 +62,15 @@ function createElementNode(vdom, parentEl) {
   vdom.el = elementNode;
 
   addProps(elementNode, props, vdom);
-  children.forEach((child) => mountDom(child, elementNode));
+  children.forEach((child) => mountDom(child, parentEl));
   parentEl.appendChild(elementNode);
 }
 
 /**
- * Applies properties to a DOM element by separating event listeners from attributes.
- * Event listeners are handled separately and stored on the vdom for later reference.
- *
- * @param {HTMLElement} el - The DOM element to apply properties to
- * @param {Object} props - The properties object containing events (on) and attributes
- * @param {Object} vdom - The virtual DOM node to store event listener references on
+ * Adds properties (attributes and event listeners) to a DOM element
+ * @param {HTMLElement} el - The DOM element to add properties to
+ * @param {Object} props - The properties object containing attributes and events
+ * @param {Object} vdom - The virtual DOM node to store listener references
  */
 function addProps(el, props, vdom) {
   const { on: events, ...attr } = props;
