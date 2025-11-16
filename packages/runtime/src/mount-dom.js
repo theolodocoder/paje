@@ -57,6 +57,7 @@ function createFragmentNode(vdom, parentEl) {
 function createElementNode(vdom, parentEl) {
   const { tag, props, children } = vdom;
 
+  // TODO: tag might be undefined xx
   const elementNode = document.createElement(tag);
   // saves ref to elements in a el key on the vdom obj
   vdom.el = elementNode;

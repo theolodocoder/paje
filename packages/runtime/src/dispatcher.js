@@ -13,9 +13,9 @@ export class Dispatcher {
       // no need to unsub from a reg handler belonging to that cmdName
       return () => {};
     }
+
     // handler isnt reg so add it
     handlers.push(handler);
-
     return () => {
       const handlerIdx = handlers.indexOf(handler);
       handlers.splice(handlerIdx, 1);
