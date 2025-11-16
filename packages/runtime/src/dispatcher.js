@@ -1,20 +1,29 @@
+/**
+ * Event dispatcher implementing pub/sub pattern for state management
+ *
+ * Allows multiple handlers to subscribe to actions, and executes them when
+ * an action is dispatched. Global afterHandlers fire after every dispatch.
+ */
 export class Dispatcher {
   #subs = new Map();
   #afterHandlers = [];
 
+  /**
+   * Subscribe a handler to a specific action name
+   * @param {string} commandName - Action name
+   * @param {Function} handler - Called with payload when action is dispatched
+   * @returns {Function} Unsubscribe function
+   */
   subscribe(commandName, handler) {
     if (!this.#subs.has(commandName)) {
-      // if the cmdName doesnt exist initialize as part of subscription Map
       this.#subs.set(commandName, []);
     }
 
     const handlers = this.#subs.get(commandName);
     if (handlers.includes(handler)) {
-      // no need to unsub from a reg handler belonging to that cmdName
       return () => {};
     }
 
-    // handler isnt reg so add it
     handlers.push(handler);
     return () => {
       const handlerIdx = handlers.indexOf(handler);
@@ -22,6 +31,11 @@ export class Dispatcher {
     };
   }
 
+  /**
+   * Register a handler that fires after ANY action is dispatched
+   * @param {Function} handler - Called with no arguments after dispatch
+   * @returns {Function} Unsubscribe function
+   */
   afterCommandHandler(handler) {
     this.#afterHandlers.push(handler);
     return () => {
@@ -30,6 +44,11 @@ export class Dispatcher {
     };
   }
 
+  /**
+   * Dispatch an action to all subscribed handlers, then run afterHandlers
+   * @param {string} commandName - Action name
+   * @param {*} payload - Data passed to handlers
+   */
   dispatch(commandName, payload) {
     if (this.#subs.has(commandName)) {
       const handlers = this.#subs.get(commandName);
@@ -38,7 +57,6 @@ export class Dispatcher {
       console.warn(`No handlers for command: ${commandName}`);
     }
 
-    // call the afterHandler for notifiation of DOM
     this.#afterHandlers.forEach((handler) => handler());
   }
 }
