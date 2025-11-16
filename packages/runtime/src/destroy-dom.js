@@ -43,6 +43,10 @@ function destroyElementNode(vdom) {
     removeEventListeners(el, listeners);
     delete vdom.listeners;
   }
+
+  if (el && el.parentNode) {
+    el.remove();
+  }
 }
 
 /**
