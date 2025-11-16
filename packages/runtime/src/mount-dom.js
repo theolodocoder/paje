@@ -63,7 +63,7 @@ function createElementNode(vdom, parentEl) {
   vdom.el = elementNode;
 
   addProps(elementNode, props, vdom);
-  children.forEach((child) => mountDom(child, parentEl));
+  children?.forEach((child) => mountDom(child, elementNode));
   parentEl.appendChild(elementNode);
 }
 

@@ -1,3 +1,4 @@
-// this is not supposed to show in my build
-console.log("First lines of my PAJE ========= ");
-// i want to test how the rollup-cleanup pkg works
+console.log("================== Welcome to Paje Runtime! ==================");
+
+export { h, hFragment, hString } from "./h.js";
+export { createPaje } from "./paje.js";

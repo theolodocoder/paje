@@ -5,12 +5,11 @@ import { withoutNulls } from "./utils/arrays.js";
  * @readonly
  * @enum {string}
  */
-export const DOM_TYPES = {
+const DOM_TYPES = {
   TEXT: "text",
   ELEMENT: "element",
   FRAGMENT: "fragment",
 };
-
 
 /**
  * Hyperscript function to create a virtual DOM element node.
@@ -19,7 +18,7 @@ export const DOM_TYPES = {
  * @param {Array} [children=[]] - The children of the element (strings or VNodes).
  * @returns {Object} Virtual DOM node representing an element.
  */
-export function h(tag, props = {}, children = []) {
+function h(tag, props = {}, children = []) {
   return {
     tag,
     props,
@@ -76,4 +75,4 @@ function MessageComponent({ level, message }) {
   return h("div", { class: `message message--${level}` }[h("p", {}, message)]);
 }
 
-
+export { DOM_TYPES, h, hFragment, hString };

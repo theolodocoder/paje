@@ -1,6 +1,6 @@
-import { destroyDom } from "./destroy-dom";
 import { Dispatcher } from "./dispatcher";
 import { mountDom } from "./mount-dom";
+import { destroyDom } from "./destroy-dom";
 
 /**
  * Creates a Paje application instance

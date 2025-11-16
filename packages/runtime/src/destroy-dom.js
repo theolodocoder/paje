@@ -1,4 +1,5 @@
 import { DOM_TYPES } from "./h";
+import { removeEventListeners } from "./events";
 
 /**
  * Destroys a virtual DOM tree and removes it from the actual DOM
