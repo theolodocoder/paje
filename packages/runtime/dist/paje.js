@@ -1,5 +1,5 @@
 function withoutNulls(arr) {
-  return arr.filter((item) => item != null);
+  return arr.length > 0 ? arr.filter((item) => item != null) : [];
 }
 
 const DOM_TYPES = {

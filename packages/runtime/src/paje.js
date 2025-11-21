@@ -38,8 +38,8 @@ export function createPaje(state, view, reducers = {}) {
     const reducer = reducers[actionName];
 
     const subs = dispatcher.subscribe(actionName, (payload) => {
-      state = reducer(state, payload);
-    });
+      sta
+    te = reducer(state, payload);});
 
     subscriptions.push(subs);
   }
